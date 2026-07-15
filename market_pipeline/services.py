@@ -7,7 +7,7 @@ from market_pipeline.models import (
     Metrics,
     PricePoint,
 )
-from market_pipeline.sample_data import SAMPLE_MARKET_DATA
+from market_pipeline.repositories import MarketDataRepository
 
 
 class TickerNotFoundError(ValueError):
@@ -15,8 +15,14 @@ class TickerNotFoundError(ValueError):
 
 
 class MarketDataService:
-    def __init__(self, data: dict[str, list[PricePoint]] | None = None) -> None:
-        self._data = data or SAMPLE_MARKET_DATA
+    def __init__(
+        self,
+        repository: MarketDataRepository | None = None,
+        data: dict[str, list[PricePoint]] | None = None,
+    ) -> None:
+        if repository is not None and data is not None:
+            raise ValueError("Provide either repository or data, not both")
+        self._repository = repository or MarketDataRepository(data or None)
 
     def latest_price(self, ticker: str) -> LatestPrice:
         prices = self.price_history(ticker)
@@ -29,8 +35,7 @@ class MarketDataService:
         )
 
     def price_history(self, ticker: str) -> list[PricePoint]:
-        normalized_ticker = ticker.upper()
-        prices = self._data.get(normalized_ticker)
+        prices = self._repository.get_price_history(ticker)
         if not prices:
             raise TickerNotFoundError(f"Ticker '{ticker}' was not found")
         return prices
@@ -59,7 +64,7 @@ class MarketDataService:
                 price_change_percent=self._price_change_percent(prices),
                 volume=sum(price.volume for price in prices),
             )
-            for ticker, prices in sorted(self._data.items())
+            for ticker, prices in self._repository.list_price_histories()
         ]
 
         return MarketSummary(

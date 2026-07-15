@@ -1,11 +1,12 @@
 # Real-Time Market Data Pipeline
 
-Simple first version of a real-time market data pipeline. This skeleton exposes FastAPI endpoints backed by in-memory sample data so the API contract and metric calculations can be developed before adding Kafka, PostgreSQL, and Redis.
+Simple first version of a real-time market data pipeline. This skeleton exposes FastAPI endpoints backed by in-memory seed data so the API contract and metric calculations can be developed before adding Kafka, PostgreSQL, and Redis.
 
 ## Current Features
 
 - FastAPI application with health, price, metrics, and market summary endpoints.
-- In-memory sample market data for stocks and crypto.
+- In-memory seed market data for stocks and crypto.
+- Repository layer for market data access.
 - Basic calculations for moving averages, returns, volatility, VWAP, and price change percentage.
 - Docker and Docker Compose scaffolding.
 - PostgreSQL schema for instruments, raw price events, latest prices, and calculated metrics.

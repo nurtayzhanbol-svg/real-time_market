@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from market_pipeline.models import PricePoint
 
 
-SAMPLE_MARKET_DATA: dict[str, list[PricePoint]] = {
+SEED_MARKET_DATA: dict[str, list[PricePoint]] = {
     "AAPL": [
         PricePoint(
             ticker="AAPL",
@@ -101,3 +101,5 @@ SAMPLE_MARKET_DATA: dict[str, list[PricePoint]] = {
         ),
     ],
 }
+
+SAMPLE_MARKET_DATA = SEED_MARKET_DATA
