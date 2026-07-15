@@ -1,0 +1,25 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: local
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/market
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: market
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/001_schema.sql:ro
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
