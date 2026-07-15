@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.115.0,<0.116.0",
+    "sqlalchemy[asyncio]>=2.0.0,<3.0.0",
     "uvicorn[standard]>=0.30.0,<0.31.0",
 ]
 
@@ -19,6 +20,9 @@ dev = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+
+[tool.setuptools.packages.find]
+include = ["market_pipeline*"]
 
 [tool.ruff]
 line-length = 100
